@@ -23,6 +23,7 @@ export default function RootLayout({
                                    }: Readonly<{
     children: React.ReactNode;
 }>) {
+    // TODO: change theme from dark to light theme, white background
     return (
         <html lang="en">
         <body
