@@ -1,47 +1,59 @@
 "use client";
-import {SearchResults, SpotifyApi, Track} from '@spotify/web-api-ts-sdk';
+import {SearchResults, Track} from '@spotify/web-api-ts-sdk';
 import {ChangeEvent, useState} from "react";
-
-const spotifyClientId = process.env.NEXT_PUBLIC_AUTH_SPOTIFY_ID!;
-const spotifyClientSecret = process.env.NEXT_PUBLIC_AUTH_SPOTIFY_SECRET!;
+import {SearchResult} from "@/components/search-result";
 
 export default function Search() {
-    const sdk = SpotifyApi.withClientCredentials(spotifyClientId, spotifyClientSecret);
+    const sdk = globalThis.sdk;
+    // ToDo add a fake search history underneath the search bar, the results should be displayed in the foreground
+    // ToDo put a search icon into the input field
 
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState<Track[]>([]);
 
     const handleSearch = async (event: ChangeEvent<HTMLInputElement>) => {
-
         const inputValue = event.target.value;
-
         setSearchTerm(inputValue);
 
         let items: SearchResults<readonly ["track"]>;
         try {
-            console.log(spotifyClientId);
-            console.log(spotifyClientSecret);
-            console.log(process.env.NODE_ENV);
-            items = await sdk.search(inputValue, ["track"], 'DE', 5);
+            items = await sdk.search(inputValue, ["track", "artist"], 'DE', 5);
             setResults(items.tracks?.items)
         } catch (e) {
             console.warn(e);
-            console.warn(JSON.stringify(e));
         }
     }
 
-    return (<><h2>ToDo: Search</h2>
+    return (<>
         <div>
             <input type="text"
 
                    id="inputId"
 
-                   placeholder="Enter your keywords"
+                   placeholder="Search a track or an artist"
 
                    value={searchTerm ?? ""} onChange={handleSearch}
 
-                   className="bg-[transparent] outline-none border-none w-full py-3 pl-2 pr-3"/>
-            {results.map(result => result.name).join(', ')}
+                   className="bg-[transparent] outline-none w-full py-3 pl-2 pr-3 border-gray-400 border-2 mb-5 rounded-md"/>
+            {searchTerm && (<ul>
+                {results.map(result => {
+                    return (<SearchResult key={result.id} track={result}/>)
+                })}
+
+            </ul>)}
+            {!searchTerm && (
+                <div>
+                    <h4>Last Searched</h4>
+                    <ul>
+                        <li>...</li>
+                        <li>...</li>
+                        <li>...</li>
+                        <li>...</li>
+                        <li>...</li>
+                    </ul>
+                </div>
+            )}
+
         </div>
     </>)
 }

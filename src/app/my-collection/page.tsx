@@ -1,3 +1,7 @@
+
+
 export default async function MusicCollection() {
-    return (<h2>ToDo: Music Collection</h2>)
+    const sdk = globalThis.sdk;
+
+    return (<div></div>)
 }

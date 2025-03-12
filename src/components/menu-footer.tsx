@@ -7,7 +7,7 @@ export const MenuFooter = () => {
             <li className="flex items-center gap-3 hover:underline hover:underline-offset-4"
             >
                 <Link href="/home">
-                    <HomeIcon color={'white'} width={48}
+                    <HomeIcon color={'#171717'} width={48}
                               height={48}
                     />
                 </Link>
@@ -15,7 +15,7 @@ export const MenuFooter = () => {
             <li className="flex items-center gap-3 hover:underline hover:underline-offset-4"
             >
                 <Link href="/my-collection">
-                    <MusicalNoteIcon color={'white'} width={48}
+                    <MusicalNoteIcon color={'#171717'} width={48}
                                      height={48}
                     />
                 </Link>
@@ -23,7 +23,7 @@ export const MenuFooter = () => {
             <li className="flex items-center gap-3 hover:underline hover:underline-offset-4"
             >
                 <Link href="/search">
-                    <MagnifyingGlassIcon color={'white'} width={48}
+                    <MagnifyingGlassIcon color={'#171717'} width={48}
                                          height={48}
                     />
                 </Link>
