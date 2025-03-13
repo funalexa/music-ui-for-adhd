@@ -4,26 +4,25 @@ import {useEffect, useState} from "react";
 import {ContentCard} from "@/components/home/content-card";
 
 
-async function fetchSavedAlbums(sdk: SpotifyApi) {
-    console.log(sdk);
-    //const albums = await sdk.currentUser.albums.savedAlbums();
-    //console.log(albums);
-    //return albums.items;
-    return [];
-}
 
 export default function Home() {
     const sdk = globalThis.sdk;
 
   const [albumState, setAlbumState] = useState<SavedAlbum[]>([]);
 
+    async function fetchSavedAlbums() {
+        const albums = await sdk.currentUser.albums.savedAlbums();
+        console.log(albums);
+        return albums.items;
+    }
+
     useEffect(() => {
         async function loadData() {
-            const fetchedAlbums = await fetchSavedAlbums(sdk);
+            const fetchedAlbums = await fetchSavedAlbums();
             setAlbumState(fetchedAlbums);
         }
         loadData();
-    }, [sdk]);
+    }, [globalThis.sdk]);
 
 
 
@@ -36,6 +35,6 @@ export default function Home() {
         <ContentCard/>
         <ContentCard/>
     <ContentCard/>
-        {albumState.map(album => album.album).join(',')}
+        {albumState.map(album => album.album.name).join(', ')}
     </div>)
 }

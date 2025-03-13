@@ -32,7 +32,7 @@ export default function RootLayout({
     useEffect(() => {
         async function setUpAuth() {
             console.log('setting sdk now');
-            globalThis.sdk = SpotifyApi.withUserAuthorization(spotifyClientId, "http://localhost:3000/home");
+            globalThis.sdk = SpotifyApi.withUserAuthorization(spotifyClientId, "http://localhost:3000/home", ['user-library-read', 'user-top-read']);
             await sdk.authenticate();
         }
         setUpAuth();

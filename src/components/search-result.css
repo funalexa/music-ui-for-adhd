@@ -1,0 +1,10 @@
+.search-result-item {
+    line-height: 40px;
+    min-height: 45px;
+    align-items: start;
+    display: flex;
+    position: relative;
+    width: calc(320px - 1rem);
+    max-width: calc(320px - 1rem);
+}
+
