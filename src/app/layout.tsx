@@ -1,11 +1,11 @@
 'use client';
-import type {Metadata} from "next";
 import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
 import {MenuFooter} from "@/components/menu-footer";
 import {PageTitle} from "@/components/page-title";
 import {SpotifyApi} from "@spotify/web-api-ts-sdk";
 import {useEffect} from "react";
+import {Scopes} from "@/scopes";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -29,11 +29,12 @@ export default function RootLayout({
                                    }: Readonly<{
     children: React.ReactNode;
 }>) {
+    // TODO: add breadcrumbs somewhere for pages that are not home, search, collection
     useEffect(() => {
         async function setUpAuth() {
             console.log('setting sdk now');
-            globalThis.sdk = SpotifyApi.withUserAuthorization(spotifyClientId, "http://localhost:3000/home", ['user-library-read', 'user-top-read']);
-            await sdk.authenticate();
+            globalThis.sdk = SpotifyApi.withUserAuthorization(spotifyClientId, "http://localhost:3000/home", Scopes.all);
+            await globalThis.sdk.authenticate().then((authRes) => console.log(authRes));
         }
         setUpAuth();
     }, [])

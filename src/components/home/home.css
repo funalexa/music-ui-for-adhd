@@ -1,0 +1,15 @@
+.music-title-card {
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    position: relative;}
+
+.content-card {
+    min-height: 80px;
+    height:80px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    position: relative;
+}

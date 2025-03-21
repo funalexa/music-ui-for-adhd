@@ -20,7 +20,6 @@ export const SearchHistoryItem = ({track, artist, albumId}: ISearchHistoryItemPr
         if (sdk) {
             const fetchedAlbum = await sdk.albums.get(albumId, 'DE');
             setAlbum(fetchedAlbum);
-
         }
     }
 
