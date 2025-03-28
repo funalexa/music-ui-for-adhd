@@ -8,8 +8,8 @@ export const PageTitle = () => {
         case '/home': title = 'Home'; break;
         case '/my-collection': title = 'Music Collection'; break;
         case '/search': title = 'Search'; break;
-        default: title = 'Music Streaming App';
+        default: title = undefined;
     }
 
-    return (<h2> {title} </h2>)
+    return (title ? <h2> {title} </h2> : <></>)
 }

@@ -9,20 +9,19 @@ export default function MusicCollection() {
 
     const [savedTrackState, setSavedTrackState] = useState<SavedTrack[]>([]);
 
-    async function fetchSavedAlbums() {
+    async function fetchSavedMusic() {
         //const albums = await sdk.currentUser.albums.savedAlbums();
-        const tracks =await sdk.currentUser.tracks.savedTracks();
-        //console.log(albums);
+        const tracks = await sdk.currentUser.tracks.savedTracks();
         return tracks.items;
     }
 
     useEffect(() => {
         async function loadData() {
-            const fetchedTracks = await fetchSavedAlbums();
+            const fetchedTracks = await fetchSavedMusic();
             setSavedTrackState(fetchedTracks);
         }
         loadData();
     }, [globalThis.sdk]);
 
-    return (<div></div>)
+    return (<div> {savedTrackState.map(track => track.track.name).join(', ')} </div>)
 }

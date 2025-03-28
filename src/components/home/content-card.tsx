@@ -4,11 +4,11 @@ import Link from "next/link";
 interface IContentCardProps {
     text: string;
     large?: boolean;
-    link?: string;
+    link: string;
 }
 
 export const ContentCard = ({text, large, link}: IContentCardProps) => {
-    let className = 'content-card border-2 border-gray-200';
+    let className = 'content-card border-2 border-gray-200 rounded-md';
     if (large) className = className.concat(' col-span-full');
     if (link) {
         return <Link href={link} className={className}> {text} </Link>
