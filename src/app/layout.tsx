@@ -6,7 +6,7 @@ import {PageTitle} from "@/components/page-title";
 import {SpotifyApi} from "@spotify/web-api-ts-sdk";
 import {useEffect} from "react";
 import {Scopes} from "@/scopes";
-import { HistoryProvider } from '@/contexts/History'
+import {HistoryProvider} from '@/contexts/History'
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -30,13 +30,13 @@ export default function RootLayout({
                                    }: Readonly<{
     children: React.ReactNode;
 }>) {
-    // TODO: add breadcrumbs somewhere for pages that are not home, search, collection
     useEffect(() => {
         async function setUpAuth() {
             console.log('setting sdk now');
             globalThis.sdk = SpotifyApi.withUserAuthorization(spotifyClientId, "http://localhost:3000/home", Scopes.all);
             await globalThis.sdk.authenticate().then((authRes) => console.log(authRes));
         }
+
         setUpAuth();
     }, [])
 
@@ -45,21 +45,20 @@ export default function RootLayout({
         <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-              <HistoryProvider>
-        <div
-            className="grid grid-rows-[20px_1fr_20px] justify-items-center min-h-screen p-8 pb-10 gap-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-            <header className="row-start-1 flex gap-6 flex-wrap items-center justify-center">
+        <HistoryProvider>
+            <div
+                className="grid grid-rows-[20px_1fr_20px] justify-items-center min-h-screen p-8 pb-10 gap-8 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+
                 <PageTitle/>
-            </header>
-            <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-                {children}
-            </main>
-            <footer style={{marginTop: '-20px'}}
-                className="row-start-3 flex gap-6 flex-wrap items-center justify-center border-t-2 border-t-gray-500 pt-3">
-                <MenuFooter/>
-            </footer>
-        </div>
-              </HistoryProvider>
+                <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+                    {children}
+                </main>
+                <footer style={{marginTop: '-20px'}}
+                        className="row-start-3 flex gap-6 flex-wrap items-center justify-center border-t-2 border-t-gray-500 pt-3">
+                    <MenuFooter/>
+                </footer>
+            </div>
+        </HistoryProvider>
         </body>
         </html>
     );

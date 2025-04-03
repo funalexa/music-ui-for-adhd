@@ -57,7 +57,7 @@ export default function Home() {
 
             <ContentCard text='Go to Music Collection' link='my-collection' large/>
             <div className='mt-4 col-span-full'><h4>New Recommendations For Me</h4></div>
-            <ContentCard text='Recommended Playlist of the Day' link='playlist/1' large/>
+            <ContentCard text='Recommended Playlist of the Day' link='playlist/35fCf9Qa5JUhy2jhOduSSL' large/>
         </div>
     )
 }

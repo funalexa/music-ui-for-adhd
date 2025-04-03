@@ -1,7 +1,7 @@
-import type { NextConfig } from "next";
+import type {NextConfig} from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+    /* config options here */
     images: {
         remotePatterns: [
             {
@@ -14,7 +14,22 @@ const nextConfig: NextConfig = {
                 hostname: 'i.scdn.co',
                 pathname: '/image/**',
             },
+            {
+                protocol: 'https',
+                hostname: 'mosaic.scdn.co',
+                pathname: '**'
+            }
         ],
+    },
+    async redirects() {
+        return [
+            // Basic redirect
+            {
+                source: '/',
+                destination: '/home',
+                permanent: true,
+            },
+        ]
     },
 };
 

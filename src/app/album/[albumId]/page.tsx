@@ -1,17 +1,16 @@
 "use client";
-import { useParams } from 'next/navigation'
-import {useHistory} from "@/contexts/History";
+import {useParams} from 'next/navigation'
 import {useEffect, useState} from "react";
 import {Album} from "@spotify/web-api-ts-sdk";
 import Image from "next/image";
+import {TrackEntry} from "@/components/track-entry";
+import "../../../components/album-playlist.css";
 
 
 export default function AlbumPage() {
-    // TODO: use history to show breadcrumbs, did the user come from home or search or where?
     const fallbackImage = 'https://cdn.pixabay.com/photo/2017/01/09/20/11/music-1967480_1280.png';
     const params = useParams()
-    const { history } = useHistory();
-    console.log(history);
+
     let albumId: string;
     if (params.albumId?.constructor.name == "Array") {
         albumId = params.albumId[0];
@@ -29,16 +28,30 @@ export default function AlbumPage() {
             try {
                 const album = await sdk.albums.get(albumId, 'DE');
                 setAlbumState(album);
+            } catch (e) {
+                console.log(e)
             }
-            catch (e) {console.log(e)}
         }
     }
 
     useEffect(() => {
         fetchAlbum();
     }, [globalThis.sdk]);
-    return <div> <h4>{albumState?.name}</h4>
-        <p>{albumState?.artists.map(artist => artist.name).join(', ')}</p>
-        <Image src={albumState?.images?.[0]?.url || fallbackImage} alt={albumState?.name || 'Image of Album'} width={124} height={124}/>
-    </div>
+    return (<div className='grid grid-rows-[270_390]'>
+            <div className="title-header">
+                <h1 className="flex justify-center">{albumState?.name}</h1>
+                <div className="flex justify-center mt-4">
+                    <Image src={albumState?.images?.[0]?.url || fallbackImage}
+                           alt={albumState?.name || 'Image of Album'}
+                           width={192} height={192}/>
+                </div>
+                <p className="flex justify-center mt-4">{albumState?.artists.map(artist => artist.name).join(', ')}</p>
+            </div>
+            <div className='overflow-scroll'>
+                <ul className='track-list rounded-l mt-4'> {albumState?.tracks.items?.map(track => <TrackEntry
+                    track={track}
+                    key={track.id}/>)}</ul>
+            </div>
+        </div>
+    );
 }

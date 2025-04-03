@@ -1,0 +1,19 @@
+.track-entry-item {
+    line-height: 25px;
+    min-height: 50px;
+    max-height: 100px;
+    align-items: center;
+    display: flex;
+    position: relative;
+    width: calc(320px - 1rem);
+    max-width: calc(320px - 1rem);
+}
+
+.track-name {
+    width: calc(100% - 30px);
+}
+
+.track-duration {
+    width: 30px;
+    align-items: center;
+}

@@ -1,0 +1,17 @@
+.album-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    width: 320px;
+    min-width: 320px;
+    max-width: 320px;
+}
+
+.title-header {
+    width: 304px;
+}
+
+.track-list > li:first-of-type {
+    border-top: 2px solid;
+    border-color: theme('colors.gray.200');
+}
