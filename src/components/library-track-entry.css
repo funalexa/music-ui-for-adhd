@@ -1,0 +1,6 @@
+.album-image {
+    display: block;
+    width: 48px;
+    min-width: 48px;
+    max-width: 48px;
+}
