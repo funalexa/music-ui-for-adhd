@@ -1,7 +1,6 @@
-import {HomeIcon, MagnifyingGlassCircleIcon, MusicalNoteIcon} from "@heroicons/react/24/outline";
+import {HomeIcon, MagnifyingGlassIcon, MusicalNoteIcon} from "@heroicons/react/24/outline";
 import {
     HomeIcon as HomeIconSolid,
-    MagnifyingGlassCircleIcon as MagnifyingGlassCircleIconSolid,
     MusicalNoteIcon as MusicalNoteIconSolid
 } from "@heroicons/react/24/solid";
 
@@ -41,10 +40,10 @@ export const MenuFooter = () => {
             <li className="flex items-center gap-3 hover:underline hover:underline-offset-4"
             >
                 <Link href="/search">
-                    {isActive("/search") && (<MagnifyingGlassCircleIconSolid color={'#171717'} width={48}
-                                                                       height={48}
+                    {isActive("/search") && (<MagnifyingGlassIcon color={'#171717'} width={48}
+                                                                       height={48} className='fill-black'
                     />)}
-                    {!isActive("/search") && (<MagnifyingGlassCircleIcon color={'#171717'} width={48}
+                    {!isActive("/search") && (<MagnifyingGlassIcon color={'#171717'} width={48}
                                                                    height={48}
                     />)}
 

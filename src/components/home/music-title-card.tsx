@@ -14,10 +14,10 @@ export const MusicTitleCard = ({track}: IMusicTitleCardProps) => {
         //await sdk.player.skipToNext();
     }
 
-    return (<div className='music-title-card border-2 border-gray-200 rounded-md' onClick={playSong}>
-        <div className='play-button'>
+    return (<div className='music-title-card border-2 border-green-500 rounded-md' onClick={playSong}>
+        <div className='flex items-center float-left mr-1'>
             <button className='bg-transparent border-none'><PlayIcon height={16} width={16}
-                                                                     className='mt-3 fill-sky-600'/></button>
+                                                                     className='fill-sky-600'/></button>
         </div>
         {track.name} </div>);
 }

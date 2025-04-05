@@ -18,14 +18,14 @@ export const LibraryTrackEntry = ({track}: ITrackEntryProps) => {
     }
 
     return (
-        <li className='mb-4 search-history-item border-b-gray-200 border-b-2 pb-4' key={track.id}>
+        <li className='mb-4 search-history-item border-b-gray-200 border-b-2 pb-4 flex items-center' key={track.id}>
             <div className='album-image'><Image src={track.album?.images?.[0]?.url || fallbackImage}
                                                 alt={track.album?.name || 'Image of Album'} width={48} height={48}/>
             </div>
-            <div className='pr-4 pl-1 flex w-full'>
+            <div className='ml-2 pr-4 pl-1 flex w-full'>
                 <div className="track-name"><strong>{track.name} </strong>
                     <br/> {track.artists.map(artist => artist.name).join(', ')}</div>
-                <div className="float-right track-duration"><span
+                <div className="float-right track-duration flex items-center"><span
                     className="text-gray-600"> {millisToMinutesAndSeconds(track.duration_ms)} </span></div>
             </div>
         </li>);

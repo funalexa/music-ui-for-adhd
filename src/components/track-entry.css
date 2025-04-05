@@ -1,7 +1,8 @@
 .track-entry-item {
     line-height: 25px;
     min-height: 50px;
-    max-height: 100px;
+    height: fit-content;
+    max-height: 300px;
     align-items: center;
     display: flex;
     position: relative;

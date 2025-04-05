@@ -47,7 +47,7 @@ export default function AlbumPage() {
                 </div>
                 <p className="flex justify-center mt-4">{albumState?.artists.map(artist => artist.name).join(', ')}</p>
             </div>
-            <div className='overflow-scroll'>
+            <div className='overflow-y-auto overflow-x-hidden'>
                 <ul className='track-list rounded-l mt-4'> {albumState?.tracks.items?.map(track => <TrackEntry
                     track={track}
                     key={track.id}/>)}</ul>

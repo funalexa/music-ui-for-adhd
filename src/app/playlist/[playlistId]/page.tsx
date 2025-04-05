@@ -46,9 +46,9 @@ export default function PlaylistPage() {
         </div>
         <p className="flex justify-center mt-4">{playListState?.owner.display_name}</p>
         </div>
-        <div className='overflow-scroll'>
+        <div className='overflow-y-auto overflow-x-hidden'>
         <ul className='track-list rounded-l mt-4'> {playListState?.tracks.items?.map(track => <TrackEntry track={track.track}
-                                                                                            key={track.track.id.concat(track.added_at)}/>)}</ul>
+                                                                                            key={track.track.id.concat(track.added_at)} isInPlayList={true}/>)}</ul>
         </div>
 
     </div>);

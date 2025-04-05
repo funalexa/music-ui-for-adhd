@@ -1,8 +1,11 @@
 'use client';
-import {RecentlyPlayedTracksPage, SavedAlbum, Track} from "@spotify/web-api-ts-sdk";
+import {SavedAlbum, Track} from "@spotify/web-api-ts-sdk";
 import {useEffect, useState} from "react";
 import {ContentCard} from "@/components/home/content-card";
 import {MusicTitleCard} from "@/components/home/music-title-card";
+import {fallbackImage} from "@/constants";
+import {MusicalNoteIcon} from "@heroicons/react/24/outline";
+import colors from "tailwindcss/colors";
 
 
 export default function Home() {
@@ -45,18 +48,19 @@ export default function Home() {
 
     return (<div className='grid grid-cols-2 gap-4'>
             <div className='mt-4 col-span-full'>
-                <h4>My Songs</h4></div>
+                <h4><strong>My Songs</strong></h4></div>
             {recentTracksState?.map(track => <MusicTitleCard track={track} key={track.id}/>)}
 
-            <div className='mt-4 col-span-full'><h4>My Albums</h4></div>
+            <div className='mt-4 col-span-full'><h4><strong>My Albums</strong></h4></div>
             {albumState.slice(0, 2).map(album => {
-                return (<ContentCard key={album.album.id} text={album.album.name} link={`album/${album.album.id}`}/>)
+                return (<ContentCard key={album.album.id} text={album.album.name} link={`album/${album.album.id}`}
+                                     image={album.album.images?.[0]?.url || fallbackImage}/>)
             })}
 
-            <div className='mt-4 col-span-full'><h4>My Music Collection</h4></div>
+            <div className='mt-4 col-span-full'><h4><strong>My Music Collection</strong></h4></div>
 
             <ContentCard text='Go to Music Collection' link='my-collection' large/>
-            <div className='mt-4 col-span-full'><h4>New Recommendations For Me</h4></div>
+            <div className='mt-4 col-span-full'><h4><strong>New Recommendations For Me</strong></h4></div>
             <ContentCard text='Recommended Playlist of the Day' link='playlist/35fCf9Qa5JUhy2jhOduSSL' large/>
         </div>
     )
