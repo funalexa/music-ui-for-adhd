@@ -5,7 +5,7 @@ import {SearchResult} from "@/components/search-result";
 import {MagnifyingGlassIcon} from "@heroicons/react/24/outline";
 import './search.css';
 import {SearchHistoryItem} from "@/components/search-history-item";
-import {GlobeAltIcon, UserCircleIcon} from "@heroicons/react/24/solid";
+import {useSavedTracks} from "@/contexts/SavedTracks";
 
 export default function Search() {
     const sdk = globalThis.sdk;
@@ -13,7 +13,8 @@ export default function Search() {
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState<Track[]>([]);
     const [searchWholeMusic, setSearchWholeMusic] = useState<boolean>(true);
-    const [userSavedTracks, setUserSavedTracks] = useState<Track[]>([]);
+
+    const {savedTracks} = useSavedTracks();
 
     const handleSearch = async (event: ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value;
@@ -23,18 +24,12 @@ export default function Search() {
 
     const search = async () => {
         try {
-            console.log(searchWholeMusic);
             if (searchWholeMusic) {
                 const items = await sdk.search(searchTerm, ["track", "artist", "album"], 'DE', 5);
-                console.log(items.tracks);
-                setResults(items.tracks?.items)
+                setResults(items.tracks?.items);
 
             } else {
-                if (!userSavedTracks.length) {
-                    setUserSavedTracks((await sdk.currentUser.tracks.savedTracks()).items.map(track => track.track));
-                }
-                const filteredSavedTracks = userSavedTracks.filter(track => track.name.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 5);
-                console.log(filteredSavedTracks);
+                const filteredSavedTracks = savedTracks.filter(track => track.name.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 5);
                 setResults(filteredSavedTracks);
             }
             console.log(results);

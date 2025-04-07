@@ -1,10 +1,11 @@
 "use client";
-import { useParams } from 'next/navigation'
+import {useParams} from 'next/navigation'
 import {useEffect, useState} from "react";
 import {Playlist, Track} from "@spotify/web-api-ts-sdk";
 import Image from "next/image";
 import {TrackEntry} from "@/components/track-entry";
 import "../../../components/album-playlist.css";
+import {useSavedTracks} from "@/contexts/SavedTracks";
 
 
 export default function PlaylistPage() {
@@ -20,6 +21,7 @@ export default function PlaylistPage() {
     }
 
     const sdk = globalThis.sdk;
+    const {savedTracks, addTrack} = useSavedTracks();
 
     const [playListState, setPlaylistState] = useState<Playlist<Track>>();
 
@@ -34,21 +36,29 @@ export default function PlaylistPage() {
         }
     }
 
+    async function addToSavedTracks(trackId: string) {
+        await addTrack(trackId);
+    }
+
     useEffect(() => {
         fetchPlaylist();
     }, [globalThis.sdk, playlistId]);
     return (<div className='grid grid-rows-[270_390]'>
         <div className="title-header">
-        <h1 className="flex justify-center">{playListState?.name}</h1>
-        <div className="flex justify-center mt-4">
-            <Image src={playListState?.images?.[0]?.url || fallbackImage} alt={playListState?.name || 'Image of Album'}
-                   width={192} height={192}/>
-        </div>
-        <p className="flex justify-center mt-4">{playListState?.owner.display_name}</p>
+            <h1 className="flex justify-center">{playListState?.name}</h1>
+            <div className="flex justify-center mt-4">
+                <Image src={playListState?.images?.[0]?.url || fallbackImage}
+                       alt={playListState?.name || 'Image of Album'}
+                       width={192} height={192}/>
+            </div>
+            <p className="flex justify-center mt-4">{playListState?.owner.display_name}</p>
         </div>
         <div className='overflow-y-auto overflow-x-hidden'>
-        <ul className='track-list rounded-l mt-4'> {playListState?.tracks.items?.map(track => <TrackEntry track={track.track}
-                                                                                            key={track.track.id.concat(track.added_at)} isInPlayList={true}/>)}</ul>
+            <ul className='track-list rounded-l mt-4'> {playListState?.tracks.items?.map(track => <TrackEntry
+                track={track.track}
+                key={track.track.id.concat(track.added_at)} isInPlayList={true}
+                includedInOwnLibrary={savedTracks.map(savedTracks => savedTracks.id).includes(track.track.id)}
+                addTrack={() => addToSavedTracks(track.track.id)}/>)}</ul>
         </div>
 
     </div>);

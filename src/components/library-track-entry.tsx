@@ -13,7 +13,6 @@ export const LibraryTrackEntry = ({track}: ITrackEntryProps) => {
     function millisToMinutesAndSeconds(millis: number) {
         const minutes = Math.floor(millis / 60000);
         const seconds = ((millis % 60000) / 1000);
-        if (seconds < 10) console.log(seconds)
         return minutes + ":" + (seconds < 9.5 ? '0' : '') + seconds.toFixed(0);
     }
 
