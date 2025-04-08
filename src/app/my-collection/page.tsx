@@ -4,11 +4,18 @@ import {QuestionMarkCircleIcon, PlayCircleIcon} from "@heroicons/react/24/outlin
 import colors from "tailwindcss/colors";
 import "./collection.css";
 import {useSavedTracks} from "@/contexts/SavedTracks";
+import {useEffect} from "react";
 
 
 export default function MusicCollection() {
-    const {savedTracks} = useSavedTracks()
+    const {savedTracks, reload} = useSavedTracks()
     console.log(savedTracks);
+
+    useEffect(() => {
+        if (!savedTracks.length) {
+            reload();
+        }
+    }, [savedTracks]);
 
 
     return (<div className='overflow-y-auto overflow-x-hidden'>

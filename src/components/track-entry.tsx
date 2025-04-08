@@ -27,9 +27,9 @@ export const TrackEntry = ({track, isInPlayList, includedInOwnLibrary, addTrack}
             <div className='pr-4 pl-1 flex w-full'>
                 <div className="track-name"><strong>{track.name} </strong> {isInPlayList && (<>
                     <br/> {track.artists.map(artist => artist.name).join(', ')} </>)} </div>
-                {!isInPlayList && (<div className="float-right track-duration"><span
+                {!isInPlayList && (<div className="flex items-center float-right track-duration"><span
                     className="text-gray-600"> {millisToMinutesAndSeconds(track.duration_ms)} </span></div>)}
-                {isInPlayList && (<div className="float-right track-duration">
+                {isInPlayList && (<div className="flex items-center float-right track-duration">
                     {includedInOwnLibrary ? (<span
                         className="text-gray-600"> {millisToMinutesAndSeconds(track.duration_ms)} </span>) : (<span
                         className="text-gray-600" onClick={addTrack ? async () => addTrack() : () => {

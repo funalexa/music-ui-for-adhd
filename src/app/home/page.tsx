@@ -48,7 +48,7 @@ export default function Home() {
 
     return (<div className='grid grid-cols-2 gap-4'>
             <div className='mt-4 col-span-full'>
-                <h4><strong>My Songs</strong></h4></div>
+                <h4><strong>My Recently Listened To Songs</strong></h4></div>
             {recentTracksState?.map(track => <MusicTitleCard track={track} key={track.id}/>)}
 
             <div className='mt-4 col-span-full'><h4><strong>My Albums</strong></h4></div>
