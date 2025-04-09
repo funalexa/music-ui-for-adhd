@@ -6,6 +6,7 @@ import Image from "next/image";
 import {TrackEntry} from "@/components/track-entry";
 import "../../../components/album-playlist.css";
 import {useSavedTracks} from "@/contexts/SavedTracks";
+import {useWebPlayer} from "@/contexts/SpotifyWebPlayer";
 
 
 export default function PlaylistPage() {
@@ -22,6 +23,7 @@ export default function PlaylistPage() {
 
     const sdk = globalThis.sdk;
     const {savedTracks, addTrack} = useSavedTracks();
+    const {player} = useWebPlayer();
 
     const [playListState, setPlaylistState] = useState<Playlist<Track>>();
 
