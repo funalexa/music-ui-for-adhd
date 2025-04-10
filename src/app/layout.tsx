@@ -12,6 +12,7 @@ import {CheckCircleIcon} from "@heroicons/react/24/outline";
 import colors from "tailwindcss/colors";
 import {Badge} from "@/components/badge";
 import {SpotifyWebPlayerProvider} from "@/contexts/SpotifyWebPlayer";
+import {PlaybackWidget} from "@/components/playback-widget/playback-widget";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -68,6 +69,7 @@ export default function RootLayout({
                             <MenuFooter/>
                         </footer>
                     </div>
+                    <PlaybackWidget/>
                 </SpotifyWebPlayerProvider>
             </SavedTracksProvider>
         </HistoryProvider>

@@ -1,17 +1,17 @@
 import './home.css';
 import {PlayIcon} from "@heroicons/react/24/solid";
 import {Track} from "@spotify/web-api-ts-sdk";
+import {useWebPlayer} from "@/contexts/SpotifyWebPlayer";
 
 interface IMusicTitleCardProps {
     track: Track;
 }
 
 export const MusicTitleCard = ({track}: IMusicTitleCardProps) => {
-    const sdk = globalThis.sdk;
+    const {startTrack} = useWebPlayer();
 
     async function playSong() {
-        //await sdk.player.addItemToPlaybackQueue(track.uri);
-        //await sdk.player.skipToNext();
+        await startTrack(undefined, [track.uri]);
     }
 
     return (<div className='music-title-card border-2 border-green-500 rounded-md' onClick={playSong}>

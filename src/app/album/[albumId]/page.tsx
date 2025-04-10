@@ -23,7 +23,6 @@ export default function AlbumPage() {
     const [albumState, setAlbumState] = useState<Album>();
 
     async function fetchAlbum() {
-        console.log(sdk);
         if (sdk && albumId) {
             try {
                 const album = await sdk.albums.get(albumId, 'DE');

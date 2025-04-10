@@ -5,6 +5,12 @@ interface SpWPValidation {
     isPaused: boolean;
     isActive: boolean;
     currentTrack: Spotify.Track | undefined;
+    startTrack: (contextUri?: string, songUri?: string[]) => Promise<void>;
+    startWithShuffle: (contextUri?: string, songUri?: string[]) => Promise<void>;
+    stopTrack: () => Promise<void>;
+    forward: () => Promise<void>;
+    backward: () => Promise<void>;
+
 }
 
 const SpotifyWebPlayerContext = createContext<SpWPValidation>({} as SpWPValidation)
@@ -15,6 +21,7 @@ export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | Rea
     const [isPaused, setPaused] = useState(false);
     const [isActive, setActive] = useState(false);
     const [currentTrack, setCurrentTrack] = useState<Spotify.Track | undefined>();
+    const [deviceId, setDeviceId] = useState<string | undefined>();
 
 
     useEffect(() => {
@@ -40,6 +47,7 @@ export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | Rea
 
                 player.addListener('ready', ({device_id}: { device_id: string }) => {
                     console.log('Ready with Device ID', device_id);
+                    setDeviceId(device_id);
                 });
 
                 player.addListener('not_ready', ({device_id}: { device_id: string }) => {
@@ -72,13 +80,58 @@ export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | Rea
 
     }, [sdk]);
 
+    async function startTrack(contextUri?: string, songUri?: string[]) {
+        console.log('starting track');
+        setActive(true);
+        if (deviceId) {
+            console.log(deviceId);
+            const playerState = await player?.getCurrentState();
+            console.log('shuffle is ' + playerState?.shuffle);
+           // if (!playerState || playerState?.shuffle) {
+             //   await sdk.player.togglePlaybackShuffle(false, deviceId)
+            //}
+            await sdk.player.startResumePlayback(deviceId, contextUri, songUri);
+        } else console.warn('Player has not been initialised!')
+    }
+
+    async function startWithShuffle(contextUri?: string, songUri?: string[]) {
+        console.log('starting shuffle');
+        setActive(true);
+        if (deviceId) {
+            const playerState = await player?.getCurrentState();
+            if (playerState && !playerState.shuffle) {
+                await sdk.player.togglePlaybackShuffle(true, deviceId)
+            }
+            await sdk.player.startResumePlayback(deviceId, contextUri, songUri);
+        } else console.warn('Player has not been initialised!')
+    }
+
+    async function stopTrack() {
+        if (deviceId) {
+            await sdk.player.pausePlayback(deviceId);
+        }
+    }
+
+    async function forward() {
+        if (deviceId) {
+            await sdk.player.skipToNext(deviceId);
+        }
+    }
+
+    async function backward() {
+        if (deviceId) {
+            await sdk.player.skipToPrevious(deviceId);
+        }
+    }
+
     return (
         <SpotifyWebPlayerContext.Provider
             value={{
                 player,
                 isActive,
                 isPaused,
-                currentTrack
+                currentTrack,
+                startTrack, stopTrack, startWithShuffle, forward, backward
             }}
         >
             {children}

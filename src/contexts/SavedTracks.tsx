@@ -20,7 +20,7 @@ export const SavedTracksProvider = ({children}: { children: ReactNode | ReactNod
     const [showSuccessBadge, setShowSuccessBadge] = useState<boolean>(false);
 
     async function reload() {
-        console.log('reload');
+        console.log('');
         if (sdk) {
             const tracks = await sdk.currentUser.tracks.savedTracks();
             setSavedTracks(tracks.items.map(track => track.track).sort((trackA, trackB) => trackA.name.localeCompare(trackB.name)));

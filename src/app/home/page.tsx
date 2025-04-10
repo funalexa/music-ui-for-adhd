@@ -4,8 +4,6 @@ import {useEffect, useState} from "react";
 import {ContentCard} from "@/components/home/content-card";
 import {MusicTitleCard} from "@/components/home/music-title-card";
 import {fallbackImage} from "@/constants";
-import {MusicalNoteIcon} from "@heroicons/react/24/outline";
-import colors from "tailwindcss/colors";
 
 
 export default function Home() {
