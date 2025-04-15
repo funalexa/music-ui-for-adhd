@@ -29,7 +29,7 @@ export const PlaybackWidget = () => {
                         </button>
 
                         <button className="btn-spotify ml-5 mr-5" onClick={() => {
-                            if (isPaused) startTrack();
+                            if (isPaused) startTrack(undefined, currentTrack ? [currentTrack.uri] : undefined);
                             else stopTrack();
                         }}>
                             {isPaused ? (<PlayCircleIcon height={32} width={32} color={colors.sky["600"]}/>) :

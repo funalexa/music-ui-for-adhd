@@ -5,6 +5,7 @@ import {Album} from "@spotify/web-api-ts-sdk";
 import Image from "next/image";
 import {TrackEntry} from "@/components/track-entry";
 import "../../../components/album-playlist.css";
+import {useSDK} from "@/contexts/SDK";
 
 
 export default function AlbumPage() {
@@ -18,7 +19,7 @@ export default function AlbumPage() {
         albumId = params.albumId as string;
     }
 
-    const sdk = globalThis.sdk;
+    const {sdk} = useSDK();
 
     const [albumState, setAlbumState] = useState<Album>();
 
@@ -35,7 +36,7 @@ export default function AlbumPage() {
 
     useEffect(() => {
         fetchAlbum();
-    }, [globalThis.sdk]);
+    }, [sdk]);
     return (<div className='grid grid-rows-[270_390]'>
             <div className="title-header">
                 <h1 className="flex justify-center">{albumState?.name}</h1>

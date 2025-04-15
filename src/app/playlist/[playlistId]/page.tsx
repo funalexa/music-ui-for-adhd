@@ -7,6 +7,7 @@ import {TrackEntry} from "@/components/track-entry";
 import "../../../components/album-playlist.css";
 import {useSavedTracks} from "@/contexts/SavedTracks";
 import {useWebPlayer} from "@/contexts/SpotifyWebPlayer";
+import {useSDK} from "@/contexts/SDK";
 
 
 export default function PlaylistPage() {
@@ -21,7 +22,7 @@ export default function PlaylistPage() {
         playlistId = params.playlistId as string;
     }
 
-    const sdk = globalThis.sdk;
+    const {sdk} = useSDK();
     const {savedTracks, addTrack} = useSavedTracks();
     const {player} = useWebPlayer();
 
@@ -44,7 +45,7 @@ export default function PlaylistPage() {
 
     useEffect(() => {
         fetchPlaylist();
-    }, [globalThis.sdk, playlistId]);
+    }, [sdk, playlistId]);
     return (<div className='grid grid-rows-[270_390]'>
         <div className="title-header">
             <h1 className="flex justify-center">{playListState?.name}</h1>

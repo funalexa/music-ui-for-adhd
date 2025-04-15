@@ -4,10 +4,11 @@ import {useEffect, useState} from "react";
 import {ContentCard} from "@/components/home/content-card";
 import {MusicTitleCard} from "@/components/home/music-title-card";
 import {fallbackImage} from "@/constants";
+import {useSDK} from "@/contexts/SDK";
 
 
 export default function Home() {
-    const sdk = globalThis.sdk;
+    const {sdk} = useSDK();
 
     const [albumState, setAlbumState] = useState<SavedAlbum[]>([]);
     const [recentTracksState, setRecentTracksState] = useState<Track[]>();
@@ -42,9 +43,9 @@ export default function Home() {
     useEffect(() => {
         fetchSavedAlbums();
         fetchRecentTracks();
-    }, [globalThis.sdk]);
+    }, [sdk]);
 
-    return (<div className='grid grid-cols-2 gap-4'>
+    return (<div className='grid grid-cols-2 gap-3'>
             <div className='mt-4 col-span-full'>
                 <h4><strong>My Recently Listened To Songs</strong></h4></div>
             {recentTracksState?.map(track => <MusicTitleCard track={track} key={track.id}/>)}

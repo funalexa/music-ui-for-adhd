@@ -1,4 +1,5 @@
 import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react'
+import {useSDK} from "@/contexts/SDK";
 
 interface SpWPValidation {
     player: Spotify.Player | undefined;
@@ -15,7 +16,7 @@ interface SpWPValidation {
 
 const SpotifyWebPlayerContext = createContext<SpWPValidation>({} as SpWPValidation)
 export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | ReactNode[] }) => {
-    const sdk = globalThis.sdk;
+    const {sdk} = useSDK();
 
     const [player, setPlayer] = useState<Spotify.Player>();
     const [isPaused, setPaused] = useState(false);
@@ -83,13 +84,18 @@ export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | Rea
     async function startTrack(contextUri?: string, songUri?: string[]) {
         console.log('starting track');
         setActive(true);
-        if (deviceId) {
+        if (deviceId && sdk) {
             console.log(deviceId);
             const playerState = await player?.getCurrentState();
             console.log('shuffle is ' + playerState?.shuffle);
-           // if (!playerState || playerState?.shuffle) {
-             //   await sdk.player.togglePlaybackShuffle(false, deviceId)
-            //}
+            if (!playerState || playerState?.shuffle) {
+                try {
+                    await sdk.player.togglePlaybackShuffle(false, deviceId)
+                } catch (e) {
+                    console.warn(e)
+                }
+            }
+            console.log('resuming playback now');
             await sdk.player.startResumePlayback(deviceId, contextUri, songUri);
         } else console.warn('Player has not been initialised!')
     }
@@ -97,7 +103,7 @@ export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | Rea
     async function startWithShuffle(contextUri?: string, songUri?: string[]) {
         console.log('starting shuffle');
         setActive(true);
-        if (deviceId) {
+        if (deviceId && sdk) {
             const playerState = await player?.getCurrentState();
             if (playerState && !playerState.shuffle) {
                 await sdk.player.togglePlaybackShuffle(true, deviceId)
@@ -107,19 +113,19 @@ export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | Rea
     }
 
     async function stopTrack() {
-        if (deviceId) {
+        if (deviceId && sdk) {
             await sdk.player.pausePlayback(deviceId);
         }
     }
 
     async function forward() {
-        if (deviceId) {
+        if (deviceId && sdk) {
             await sdk.player.skipToNext(deviceId);
         }
     }
 
     async function backward() {
-        if (deviceId) {
+        if (deviceId && sdk) {
             await sdk.player.skipToPrevious(deviceId);
         }
     }

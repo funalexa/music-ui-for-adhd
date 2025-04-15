@@ -6,9 +6,10 @@ import {MagnifyingGlassIcon} from "@heroicons/react/24/outline";
 import './search.css';
 import {SearchHistoryItem} from "@/components/search-history-item";
 import {useSavedTracks} from "@/contexts/SavedTracks";
+import {useSDK} from "@/contexts/SDK";
 
 export default function Search() {
-    const sdk = globalThis.sdk;
+    const {sdk} = useSDK();
 
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState<Track[]>([]);
@@ -24,7 +25,7 @@ export default function Search() {
 
     const search = async () => {
         try {
-            if (searchWholeMusic) {
+            if (searchWholeMusic && sdk) {
                 const items = await sdk.search(searchTerm, ["track", "artist", "album"], 'DE', 5);
                 setResults(items.tracks?.items);
 

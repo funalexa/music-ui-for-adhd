@@ -1,5 +1,6 @@
 import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react'
 import {Track} from "@spotify/web-api-ts-sdk";
+import {useSDK} from "@/contexts/SDK";
 
 interface STValidation {
     savedTracks: Track[];
@@ -13,7 +14,7 @@ interface STValidation {
 
 const SavedTracksContext = createContext<STValidation>({} as STValidation)
 export const SavedTracksProvider = ({children}: { children: ReactNode | ReactNode[] }) => {
-    const sdk = globalThis.sdk;
+    const {sdk} = useSDK();
 
     const [savedTracks, setSavedTracks] = useState<Track[]>([])
 
