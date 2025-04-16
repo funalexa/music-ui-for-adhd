@@ -45,7 +45,7 @@ export default function RootLayout({
                                     {children}
                                 </>
                             </main>
-                            <footer style={{marginTop: '50px'}}
+                            <footer style={{marginTop: '30px'}}
                                     className="row-start-3 flex gap-6 flex-wrap items-center justify-center border-t-2 border-t-gray-500 pt-3">
                                 <MenuFooter/>
                             </footer>
