@@ -39,7 +39,7 @@ export default function AlbumPage() {
     }, [sdk]);
     return (<div className='grid grid-rows-[270_390]'>
             <div className="title-header">
-                <h1 className="flex justify-center">{albumState?.name}</h1>
+                <h1 className="flex justify-center"><strong>{albumState?.name}</strong></h1>
                 <div className="flex justify-center mt-4">
                     <Image src={albumState?.images?.[0]?.url || fallbackImage}
                            alt={albumState?.name || 'Image of Album'}

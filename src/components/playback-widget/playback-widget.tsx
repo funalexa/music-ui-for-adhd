@@ -10,7 +10,7 @@ export const PlaybackWidget = () => {
     }, [isActive]);
     return (
         (player && currentTrack) && (<>
-            <div className="fixed w-full bottom-24 mr-auto ml-auto flex-col flex items-center justify-center h-16">
+            <div className="fixed w-full bottom-20 mr-auto ml-auto flex-col flex items-center justify-center h-16">
                 <div className='w-72 bg-gray-400 bg-opacity-90 rounded-md h-full overflow-x-hidden overflow-y-hidden'>
                     <div className="flex items-center justify-center h-1/2 text-nowrap">
                     <span className='text-white'><strong>{

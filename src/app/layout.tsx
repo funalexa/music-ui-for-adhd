@@ -39,7 +39,7 @@ export default function RootLayout({
                             className="grid grid-rows-[20px_660px_20px] justify-items-center min-h-screen p-8 pb-10 sm:p-20 font-[family-name:var(--font-geist-sans)]">
 
                             <PageTitle/>
-                            <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+                            <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start mt-3">
                                 <>
                                     <Badge/>
                                     {children}

@@ -46,7 +46,7 @@ export default function PlaylistPage() {
     }, [sdk, playlistId]);
     return (<div className='grid grid-rows-[270_390]'>
         <div className="title-header">
-            <h1 className="flex justify-center">{playListState?.name}</h1>
+            <h1 className="flex justify-center"><strong>{playListState?.name}</strong></h1>
             <div className="flex justify-center mt-4">
                 <Image src={playListState?.images?.[0]?.url || fallbackImage}
                        alt={playListState?.name || 'Image of Album'}
