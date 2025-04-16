@@ -3,13 +3,8 @@ import {Geist, Geist_Mono} from "next/font/google";
 import "./globals.css";
 import {MenuFooter} from "@/components/menu-footer";
 import {PageTitle} from "@/components/page-title";
-import {SpotifyApi} from "@spotify/web-api-ts-sdk";
-import {useEffect} from "react";
-import {Scopes} from "@/scopes";
 import {HistoryProvider} from '@/contexts/History'
 import {SavedTracksProvider} from "@/contexts/SavedTracks";
-import {CheckCircleIcon} from "@heroicons/react/24/outline";
-import colors from "tailwindcss/colors";
 import {Badge} from "@/components/badge";
 import {SpotifyWebPlayerProvider} from "@/contexts/SpotifyWebPlayer";
 import {PlaybackWidget} from "@/components/playback-widget/playback-widget";
