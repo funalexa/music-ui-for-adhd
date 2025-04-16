@@ -8,6 +8,8 @@ interface SDKValidation {
 }
 
 const spotifyClientId = process.env.NEXT_PUBLIC_AUTH_SPOTIFY_ID!;
+const spotifyCallBackURL = process.env.NEXT_PUBLIC_CALLBACK_URL!;
+
 
 export default class FixedResponseDeserializer
     implements IResponseDeserializer {
@@ -33,7 +35,7 @@ export const SDKProvider = ({children}: { children: ReactNode | ReactNode[] }) =
 
     async function setUpAuth() {
         console.log('setting sdk now in context');
-        setSDK(SpotifyApi.withUserAuthorization(spotifyClientId, "http://localhost:3000/home", Scopes.all, {deserializer: new FixedResponseDeserializer()}));
+        setSDK(SpotifyApi.withUserAuthorization(spotifyClientId, spotifyCallBackURL, Scopes.all, {deserializer: new FixedResponseDeserializer()}));
         await sdk?.authenticate().then((authRes) => console.log(authRes));
     }
 

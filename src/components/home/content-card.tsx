@@ -16,7 +16,7 @@ export const ContentCard = ({text, large, link, image, icon}: IContentCardProps)
     if (large) className = className.concat(' col-span-full');
 
     if (image) {
-        return <Link href={link}>
+        return <Link href={link || '/'}>
             <div className="flex flex-col justify-center items-center">
                 <Image src={image}
                        alt={'Image of Album'}
@@ -25,7 +25,7 @@ export const ContentCard = ({text, large, link, image, icon}: IContentCardProps)
             </div>
         </Link>
     }
-    return <Link href={link} className={className}>
+    return <Link href={link || '/'} className={className}>
         {icon ?? icon}<h5> {text} </h5>
     </Link>;
 }

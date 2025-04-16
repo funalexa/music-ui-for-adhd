@@ -21,6 +21,6 @@ export const Breadcrumb = () => {
             break;
     }
 
-    return <div className="w-full"><Link href={previousPagePath} className='flex'>
+    return <div className="w-full"><Link href={previousPagePath || '/'} className='flex'>
         <div className='aligned-icon'><ChevronLeftIcon height={16}/></div> {previousPageName} </Link></div>;
 }

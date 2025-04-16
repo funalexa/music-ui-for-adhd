@@ -14,7 +14,6 @@ export default function Home() {
     const [recentTracksState, setRecentTracksState] = useState<Track[]>();
 
     async function fetchSavedAlbums() {
-        //console.log(sdk);
         if (sdk) {
             try {
                 //await sdk.getAccessToken().then(token => console.log(token));
