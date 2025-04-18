@@ -16,7 +16,6 @@ export default function Home() {
     async function fetchSavedAlbums() {
         if (sdk) {
             try {
-                //await sdk.getAccessToken().then(token => console.log(token));
                 const albums = await sdk.currentUser.albums.savedAlbums(10, 0, 'DE');
 
                 setAlbumState(albums.items);

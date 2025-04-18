@@ -14,7 +14,7 @@ export const MusicTitleCard = ({track}: IMusicTitleCardProps) => {
         await startTrack(undefined, [track.uri]);
     }
 
-    return (<div className='music-title-card border-2 border-green-500 rounded-md' onClick={playSong}>
+    return (<div className='music-title-card border-2 border-green-500 rounded-md h-7 overflow-clip' onClick={playSong}>
         <div className='flex items-center float-left mr-1'>
             <button className='bg-transparent border-none'><PlayIcon height={16} width={16}
                                                                      className='fill-sky-600'/></button>

@@ -23,6 +23,11 @@ const nextConfig: NextConfig = {
                 protocol: 'https',
                 hostname: 'sdk.scdn.co',
                 pathname: '**'
+            },
+            {
+                protocol: 'http',
+                hostname: 'sdk.scdn.co',
+                pathname: '**'
             }
         ],
     },
