@@ -10,7 +10,7 @@ interface IMusicTitleCardProps {
 
 export const MusicTitleCard = ({track}: IMusicTitleCardProps) => {
     const {startTrack} = useWebPlayer();
-    const ref = useRef(null)
+    const ref = useRef<HTMLDivElement>(null)
 
 
     async function playSong() {
@@ -20,7 +20,7 @@ export const MusicTitleCard = ({track}: IMusicTitleCardProps) => {
     const songTitleElement: JSX.Element = <div id='overflow' ref={ref}>{track.name}</div>;
 
     function isElementOverflowing(): boolean {
-        return 132 < ref?.current?.scrollWidth
+        return ref?.current?.scrollWidth ? 132 < ref?.current?.scrollWidth : false;
     }
 
     return (<div className='music-title-card border-2 border-green-500 rounded-md h-7 overflow-clip' onClick={playSong}>
@@ -29,5 +29,6 @@ export const MusicTitleCard = ({track}: IMusicTitleCardProps) => {
                                                                      className='fill-sky-600'/></button>
         </div>
         {(isElementOverflowing() && (
+            // @ts-expect-error marquee should not be used anymore but is a quick fix for this case
             <marquee scrollmount={6}> {track.name} </marquee>))} {!isElementOverflowing() && songTitleElement} </div>);
 }
