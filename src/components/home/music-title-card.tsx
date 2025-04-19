@@ -2,7 +2,6 @@ import './home.css';
 import {PlayIcon} from "@heroicons/react/24/solid";
 import {Track} from "@spotify/web-api-ts-sdk";
 import {useWebPlayer} from "@/contexts/SpotifyWebPlayer";
-import {text} from "node:stream/consumers";
 import {JSX, useRef} from "react";
 
 interface IMusicTitleCardProps {
