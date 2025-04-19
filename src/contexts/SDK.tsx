@@ -1,3 +1,5 @@
+'use client';
+
 import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react'
 import {IResponseDeserializer, SpotifyApi} from "@spotify/web-api-ts-sdk";
 import {Scopes} from "@/scopes";
@@ -31,16 +33,22 @@ export default class FixedResponseDeserializer
 
 const SDKContext = createContext<SDKValidation>({} as SDKValidation)
 export const SDKProvider = ({children}: { children: ReactNode | ReactNode[] }) => {
+
     const [sdk, setSDK] = useState<SpotifyApi>();
 
     async function setUpAuth() {
         console.log('setting sdk now in context');
-        setSDK(SpotifyApi.withUserAuthorization(spotifyClientId, spotifyCallBackURL, Scopes.all, {deserializer: new FixedResponseDeserializer()}));
-        await sdk?.authenticate().then((authRes) => console.log(authRes));
+        globalThis.sdk = SpotifyApi.withUserAuthorization(spotifyClientId, spotifyCallBackURL, Scopes.all, {
+            deserializer: new FixedResponseDeserializer(),
+        });
+        await globalThis.sdk.authenticate().then((authRes) => console.log(authRes));
     }
 
     useEffect(() => {
-        setUpAuth();
+        if (!globalThis.sdk) {
+            setUpAuth();
+        }
+        setSDK(globalThis.sdk);
     }, []);
 
     return (

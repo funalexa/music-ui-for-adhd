@@ -30,7 +30,7 @@ export const TrackEntry = ({track, isInPlayList, includedInOwnLibrary, addTrack}
             key={track.id}>
             <div className='flex items-center float-left mr-1' onClick={playSong}>
                 <button className='bg-transparent border-none'><PlayIcon height={16} width={16}
-                                                                         className='mt-2.5 fill-sky-600'/></button>
+                                                                         className='fill-sky-600'/></button>
             </div>
             <div className='pr-4 pl-1 flex w-full'>
                 <div className="track-name" onClick={playSong}><strong>{track.name} </strong> {isInPlayList && (<>

@@ -1,3 +1,4 @@
+'use client';
 import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react'
 import {useSDK} from "@/contexts/SDK";
 
@@ -16,7 +17,7 @@ interface SpWPValidation {
 
 const SpotifyWebPlayerContext = createContext<SpWPValidation>({} as SpWPValidation)
 export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | ReactNode[] }) => {
-    const {sdk} = useSDK();
+    const sdk = globalThis.sdk;
 
     const [player, setPlayer] = useState<Spotify.Player>();
     const [isPaused, setPaused] = useState(false);
@@ -27,8 +28,44 @@ export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | Rea
 
     useEffect(() => {
         if (sdk) {
+            console.log('overwriting fetch');
+            const originalFetch = window.fetch;
+            window.fetch = async function(input, init) {
+                console.log('window.fetch');
+                const url = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
+                console.log(url)
+
+                // If this is a request to Spotify's analytics endpoint, handle specially
+                if (url.includes('cpapi.spotify.com') || url.includes('event/item_before_load')) {
+                    try {
+                        const response = await originalFetch(input, init);
+
+                        // If we get a 404 or 400, return a fake successful response
+                        if (response.status === 404 || response.status === 400) {
+                            console.log(`Intercepted ${response.status} response for ${url.split('?')[0]}`);
+                            return new Response(JSON.stringify({success: true}), {
+                                status: 200,
+                                headers: {'Content-Type': 'application/json'}
+                            });
+                        }
+                        return response;
+                    } catch (error) {
+                        console.log(`Intercepted fetch error for ${url.split('?')[0]}`);
+                        console.warn(error);
+                        // Return a fake successful response instead of throwing
+                        return new Response(JSON.stringify({success: true}), {
+                            status: 200,
+                            headers: {'Content-Type': 'application/json'}
+                        });
+                    }
+                }
+
+                // Pass through normal requests
+                else return originalFetch(input, init);
+            };
+
             const script = document.createElement("script");
-            script.src = "https://sdk.scdn.co/spotify-player.js";
+            script.src = "http://sdk.scdn.co/spotify-player.js";
             script.async = true;
 
             document.body.appendChild(script);
@@ -86,17 +123,24 @@ export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | Rea
         setActive(true);
         if (deviceId && sdk) {
             console.log(deviceId);
-            const playerState = await player?.getCurrentState();
-            console.log('shuffle is ' + playerState?.shuffle);
-            if (!playerState || playerState?.shuffle) {
-                try {
-                    await sdk.player.togglePlaybackShuffle(false, deviceId)
-                } catch (e) {
-                    console.warn(e)
-                }
-            }
+            //const playerState = await player?.getCurrentState();
+            //console.log('shuffle is ' + playerState?.shuffle);
+            //if (!playerState || playerState?.shuffle) {
+       //         try {
+           //         await sdk.player.togglePlaybackShuffle(false, deviceId)
+         //       } catch (e) {
+           //         console.warn(e)
+           //     }
+            //}
             console.log('resuming playback now');
-            await sdk.player.startResumePlayback(deviceId, contextUri, songUri);
+            try {
+                //await sdk.player.startResumePlayback(deviceId, contextUri, songUri);
+                await sdk.makeRequest("PUT", `me/player/play?device_id=${deviceId}`, {
+                    context_uri: contextUri,
+                    uris: songUri
+                });
+                console.log('started resumeplayback');
+            } catch (e) {console.log(e)}
         } else console.warn('Player has not been initialised!')
     }
 
