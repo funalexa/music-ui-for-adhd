@@ -11,6 +11,11 @@
     width: 304px;
 }
 
+.track-list-container{
+    height: 390px;
+    max-height: 390px;
+}
+
 .track-list > li:first-of-type {
     border-top: 2px solid;
     border-color: theme('colors.gray.200');

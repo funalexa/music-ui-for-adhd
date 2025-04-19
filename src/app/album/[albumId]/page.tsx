@@ -37,7 +37,7 @@ export default function AlbumPage() {
     useEffect(() => {
         fetchAlbum();
     }, [sdk]);
-    return (<div className='grid grid-rows-[270_390]'>
+    return (<div className='grid grid-rows-[270_390] h-full'>
             <div className="title-header">
                 <h1 className="flex justify-center"><strong>{albumState?.name}</strong></h1>
                 <div className="flex justify-center mt-4">
@@ -47,7 +47,7 @@ export default function AlbumPage() {
                 </div>
                 <p className="flex justify-center mt-4">{albumState?.artists.map(artist => artist.name).join(', ')}</p>
             </div>
-            <div className='overflow-y-auto overflow-x-hidden'>
+            <div className='overflow-y-auto overflow-x-hidden track-list-container'>
                 <ul className='track-list rounded-l mt-4'> {albumState?.tracks.items?.map(track => <TrackEntry
                     track={track}
                     key={track.id}/>)}</ul>

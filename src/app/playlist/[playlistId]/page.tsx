@@ -44,7 +44,7 @@ export default function PlaylistPage() {
     useEffect(() => {
         fetchPlaylist();
     }, [sdk, playlistId]);
-    return (<div className='grid grid-rows-[270_390]'>
+    return (<div className='grid grid-rows-[270_390] h-full h-max-full'>
         <div className="title-header">
             <h1 className="flex justify-center"><strong>{playListState?.name}</strong></h1>
             <div className="flex justify-center mt-4">
@@ -54,7 +54,7 @@ export default function PlaylistPage() {
             </div>
             <p className="flex justify-center mt-4">{playListState?.owner.display_name}</p>
         </div>
-        <div className='overflow-y-auto overflow-x-hidden'>
+        <div className='overflow-y-auto overflow-x-hidden track-list-container'>
             <ul className='track-list rounded-l mt-4'> {playListState?.tracks.items?.map(track => <TrackEntry
                 track={track.track}
                 key={track.track.id.concat(track.added_at)} isInPlayList={true}
