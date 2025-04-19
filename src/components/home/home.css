@@ -13,3 +13,9 @@
     display: flex;
     position: relative;
 }
+
+#overflow {
+    white-space: nowrap;
+    max-width: 132px;
+    overflow: hidden;
+}

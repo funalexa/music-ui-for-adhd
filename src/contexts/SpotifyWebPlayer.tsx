@@ -29,7 +29,7 @@ export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | Rea
         if (sdk) {
             console.log('overwriting fetch');
             const originalFetch = window.fetch;
-            window.fetch = async function(input, init) {
+            window.fetch = async function (input, init) {
                 console.log('window.fetch');
                 const url = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
                 console.log(url)
@@ -118,33 +118,30 @@ export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | Rea
     }, [sdk]);
 
     async function startTrack(contextUri?: string, songUri?: string[]) {
-        console.log('starting track');
         setActive(true);
         if (deviceId && sdk) {
             console.log(deviceId);
-            //const playerState = await player?.getCurrentState();
-            //console.log('shuffle is ' + playerState?.shuffle);
-            //if (!playerState || playerState?.shuffle) {
-       //         try {
-           //         await sdk.player.togglePlaybackShuffle(false, deviceId)
-         //       } catch (e) {
-           //         console.warn(e)
-           //     }
-            //}
-            console.log('resuming playback now');
+            const playerState = await player?.getCurrentState();
+            if (!playerState || playerState?.shuffle) {
+                try {
+                    await sdk.player.togglePlaybackShuffle(false, deviceId)
+                } catch (e) {
+                    console.warn(e)
+                }
+            }
             try {
                 //await sdk.player.startResumePlayback(deviceId, contextUri, songUri);
                 await sdk.makeRequest("PUT", `me/player/play?device_id=${deviceId}`, {
                     context_uri: contextUri,
                     uris: songUri
                 });
-                console.log('started resumeplayback');
-            } catch (e) {console.log(e)}
+            } catch (e) {
+                console.log(e)
+            }
         } else console.warn('Player has not been initialised!')
     }
 
     async function startWithShuffle(contextUri?: string, songUri?: string[]) {
-        console.log('starting shuffle');
         setActive(true);
         if (deviceId && sdk) {
             const playerState = await player?.getCurrentState();
