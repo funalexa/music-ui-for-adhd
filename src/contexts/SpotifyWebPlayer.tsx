@@ -1,6 +1,5 @@
 'use client';
 import React, {createContext, ReactNode, useContext, useEffect, useState} from 'react'
-import {useSDK} from "@/contexts/SDK";
 
 interface SpWPValidation {
     player: Spotify.Player | undefined;
