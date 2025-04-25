@@ -5,7 +5,6 @@ import "./breadcrumb.css";
 
 export const Breadcrumb = () => {
     const {history} = useHistory();
-    console.log(history);
 
     const previousPagePath = history[history.length - 2];
     let previousPageName;

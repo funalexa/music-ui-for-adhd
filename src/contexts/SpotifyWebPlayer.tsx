@@ -11,6 +11,7 @@ interface SpWPValidation {
     stopTrack: () => Promise<void>;
     forward: () => Promise<void>;
     backward: () => Promise<void>;
+    initialisePlayer: () => Promise<void>
 
 }
 
@@ -24,8 +25,11 @@ export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | Rea
     const [currentTrack, setCurrentTrack] = useState<Spotify.Track | undefined>();
     const [deviceId, setDeviceId] = useState<string | undefined>();
 
-
     useEffect(() => {
+        if (!deviceId) initialisePlayer();
+    }, [player, sdk]);
+
+    async function initialisePlayer() {
         if (sdk) {
             console.log('overwriting fetch');
             const originalFetch = window.fetch;
@@ -63,65 +67,69 @@ export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | Rea
                 else return originalFetch(input, init);
             };
 
-            const script = document.createElement("script");
-            script.src = "http://sdk.scdn.co/spotify-player.js";
-            script.async = true;
+            if (!player) {
+                const script = document.createElement("script");
+                script.src = "http://sdk.scdn.co/spotify-player.js";
+                script.async = true;
 
-            document.body.appendChild(script);
+                document.body.appendChild(script);
 
-            window.onSpotifyWebPlaybackSDKReady = async () => {
-                const token = await sdk.getAccessToken();
-                if (!token) console.error('No access token present!')
-                const player = new window.Spotify.Player({
-                    name: 'Web Playback SDK',
-                    getOAuthToken: (cb) => {
-                        cb(token?.access_token || token?.refresh_token || '');
-                    },
-                    volume: 0.5
-                });
-
-                setPlayer(player);
-
-                player.addListener('ready', ({device_id}: { device_id: string }) => {
-                    console.log('Ready with Device ID', device_id);
-                    setDeviceId(device_id);
-                });
-
-                player.addListener('not_ready', ({device_id}: { device_id: string }) => {
-                    console.log('Device ID has gone offline', device_id);
-                });
-
-                player.addListener('player_state_changed', (state => {
-
-                    if (!state) {
-                        return;
-                    }
-
-                    setCurrentTrack(state.track_window.current_track);
-                    setPaused(state.paused);
-
-
-                    player.getCurrentState().then(state => {
-                        if (!state) setActive(false);
-                        else setActive(true)
+                window.onSpotifyWebPlaybackSDKReady = async () => {
+                    const token = await sdk.getAccessToken();
+                    if (!token) console.error('No access token present!')
+                    const player = new window.Spotify.Player({
+                        name: 'Web Playback SDK',
+                        getOAuthToken: (cb) => {
+                            cb(token?.access_token || token?.refresh_token || '');
+                        },
+                        volume: 0.5
                     });
 
-                }));
+                    setPlayer(player);
+
+                    player.addListener('ready', ({device_id}: { device_id: string }) => {
+                        console.log('Ready with Device ID', device_id);
+                        setDeviceId(device_id);
+                    });
+
+                    player.addListener('not_ready', ({device_id}: { device_id: string }) => {
+                        console.log('Device ID has gone offline', device_id);
+                    });
+
+                    player.addListener('player_state_changed', (state => {
+
+                        if (!state) {
+                            return;
+                        }
+
+                        setCurrentTrack(state.track_window.current_track);
+                        setPaused(state.paused);
 
 
-                await player.connect();
+                        player.getCurrentState().then(state => {
+                            if (!state) setActive(false);
+                            else setActive(true)
+                        });
 
-            };
+                    }));
+
+
+                    await player.connect();
+                };
+
+
+            }
         }
-
-
-    }, [sdk]);
+    }
 
     async function startTrack(contextUri?: string, songUri?: string[]) {
         setActive(true);
+
         if (deviceId && sdk) {
-            console.log(deviceId);
             const playerState = await player?.getCurrentState();
+            console.log('playerstate')
+            console.log(playerState);
+            setCurrentTrack(playerState?.track_window?.current_track);
             if (!playerState || playerState?.shuffle) {
                 try {
                     await sdk.player.togglePlaybackShuffle(false, deviceId)
@@ -140,6 +148,7 @@ export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | Rea
             }
         } else console.warn('Player has not been initialised!')
     }
+
 
     async function startWithShuffle(contextUri?: string, songUri?: string[]) {
         setActive(true);
@@ -177,7 +186,8 @@ export const SpotifyWebPlayerProvider = ({children}: { children: ReactNode | Rea
                 isActive,
                 isPaused,
                 currentTrack,
-                startTrack, stopTrack, startWithShuffle, forward, backward
+                startTrack, stopTrack, startWithShuffle, forward, backward,
+                initialisePlayer,
             }}
         >
             {children}

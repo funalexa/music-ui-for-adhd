@@ -2,6 +2,7 @@ import "./track-entry.css";
 import "./library-track-entry.css";
 import {Track} from "@spotify/web-api-ts-sdk";
 import Image from "next/image";
+import {useWebPlayer} from "@/contexts/SpotifyWebPlayer";
 
 interface ITrackEntryProps {
     track: Track;
@@ -10,14 +11,21 @@ interface ITrackEntryProps {
 const fallbackImage = 'https://cdn.pixabay.com/photo/2017/01/09/20/11/music-1967480_1280.png';
 
 export const LibraryTrackEntry = ({track}: ITrackEntryProps) => {
+    const {startTrack} = useWebPlayer();
+
     function millisToMinutesAndSeconds(millis: number) {
         const minutes = Math.floor(millis / 60000);
         const seconds = ((millis % 60000) / 1000);
         return minutes + ":" + (seconds < 9.5 ? '0' : '') + seconds.toFixed(0);
     }
 
+    async function startPlayback() {
+        await startTrack(undefined, [track.uri]);
+    }
+
     return (
-        <li className='mb-4 search-history-item border-b-gray-200 border-b-2 pb-4 flex items-center' key={track.id}>
+        <li className='mb-4 search-history-item border-b-gray-200 border-b-2 pb-4 flex items-center' key={track.id}
+            onClick={startPlayback}>
             <div className='album-image'><Image src={track.album?.images?.[0]?.url || fallbackImage}
                                                 alt={track.album?.name || 'Image of Album'} width={48} height={48}/>
             </div>

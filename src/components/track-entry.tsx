@@ -15,7 +15,6 @@ export const TrackEntry = ({track, isInPlayList, includedInOwnLibrary, addTrack}
     const {startTrack} = useWebPlayer();
 
     async function playSong() {
-        console.log(track);
         await startTrack(undefined, [track.uri]);
     }
 

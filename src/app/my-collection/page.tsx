@@ -11,7 +11,6 @@ import {useWebPlayer} from "@/contexts/SpotifyWebPlayer";
 export default function MusicCollection() {
     const {savedTracks, reload} = useSavedTracks()
     const {startTrack, startWithShuffle} = useWebPlayer();
-    console.log(savedTracks);
 
     useEffect(() => {
         if (!savedTracks.length) {
@@ -36,7 +35,8 @@ export default function MusicCollection() {
                                 className='mr-1' onClick={startPlayBackInOrder}/> Play
             </button>
             <button
-                className='play-shuffle-button border-2 border-sky-200 flex rounded-md ml-2 items-center justify-center' onClick={startPlayBackOnShuffle}>
+                className='play-shuffle-button border-2 border-sky-200 flex rounded-md ml-2 items-center justify-center'
+                onClick={startPlayBackOnShuffle}>
                 <QuestionMarkCircleIcon height={24} width={24} color={colors.sky["600"]} className='mr-1'/> Shuffle
             </button>
         </div>

@@ -9,7 +9,6 @@ import {Badge} from "@/components/badge";
 import {SpotifyWebPlayerProvider} from "@/contexts/SpotifyWebPlayer";
 import {PlaybackWidget} from "@/components/playback-widget/playback-widget";
 import {SDKProvider} from "@/contexts/SDK";
-import {useEffect} from "react";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -27,43 +26,6 @@ export default function RootLayout({
                                    }: Readonly<{
     children: React.ReactNode;
 }>) {
-    useEffect(() => {
-        console.log('overwriting fetch');
-        const originalFetch = window.fetch;
-        window.fetch = async function(input, init) {
-            console.log('called window.fetch');
-            const url = typeof input === 'string' ? input : input instanceof URL ? input.toString() : input.url;
-            console.log(url)
-
-            // If this is a request to Spotify's analytics endpoint, handle specially
-            if (url.includes('cpapi.spotify.com') || url.includes('event/item_before_load')) {
-                try {
-                    const response = await originalFetch(input, init);
-
-                    // If we get a 404 or 400, return a fake successful response
-                    if (response.status === 404 || response.status === 400) {
-                        console.log(`Intercepted ${response.status} response for ${url.split('?')[0]}`);
-                        return new Response(JSON.stringify({success: true}), {
-                            status: 200,
-                            headers: {'Content-Type': 'application/json'}
-                        });
-                    }
-                    return response;
-                } catch (error) {
-                    console.log(`Intercepted fetch error for ${url.split('?')[0]}`);
-                    console.warn(error);
-                    // Return a fake successful response instead of throwing
-                    return new Response(JSON.stringify({success: true}), {
-                        status: 200,
-                        headers: {'Content-Type': 'application/json'}
-                    });
-                }
-            }
-
-            // Pass through normal requests
-            return originalFetch(input, init);
-        };
-    }, []);
     return (
         <html lang="en">
         <body

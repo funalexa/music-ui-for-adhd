@@ -33,7 +33,6 @@ export default function Search() {
                 const filteredSavedTracks = savedTracks.filter(track => track.name.toLowerCase().includes(searchTerm.toLowerCase())).slice(0, 5);
                 setResults(filteredSavedTracks);
             }
-            console.log(results);
         } catch (e) {
             console.warn(e);
         }
